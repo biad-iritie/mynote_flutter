@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mynote/firebase_options.dart';
 import 'package:mynote/views/login_view.dart';
+import 'package:mynote/views/register_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +45,7 @@ class HomePage extends StatelessWidget {
                 print("You're verified");
               } else {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => VerifiedEmailView()));
+                    builder: (context) => const VerifiedEmailView()));
               }
               return const Text("Done");
               break;
@@ -67,6 +68,21 @@ class VerifiedEmailView extends StatefulWidget {
 class _VerifiedEmailViewState extends State<VerifiedEmailView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Verify Email"),
+      ),
+      body: Column(
+        children: [
+          const Text("Please verify your email"),
+          TextButton(
+              onPressed: () async {
+                final user = FirebaseAuth.instance.currentUser;
+                await user?.sendEmailVerification();
+              },
+              child: const Text("Send Email verification "))
+        ],
+      ),
+    );
   }
 }
