@@ -27,37 +27,32 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
+    return FutureBuilder(
+      future: Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
       ),
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            /* case ConnectionState.none:
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          /* case ConnectionState.none:
               break;
             case ConnectionState.waiting:
               break;
             case ConnectionState.active:
               break; */
-            case ConnectionState.done:
-              /* final user = FirebaseAuth.instance.currentUser;
+          case ConnectionState.done:
+            /* final user = FirebaseAuth.instance.currentUser;
               print(user);
               if (user?.emailVerified ?? false) {
                 print("You're verified");
               } else {
                 return const VerifiedEmailView();
               } */
-              return const LoginView();
-            //return const Text("Done");
-            default:
-              return const Text('Loadinng ...');
-          }
-        },
-      ),
+            return const LoginView();
+          //return const Text("Done");
+          default:
+            return const Text('Loadinng ...');
+        }
+      },
     );
   }
 }
@@ -72,16 +67,21 @@ class VerifiedEmailView extends StatefulWidget {
 class _VerifiedEmailViewState extends State<VerifiedEmailView> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text("Please verify your email"),
-        TextButton(
-            onPressed: () async {
-              final user = FirebaseAuth.instance.currentUser;
-              await user?.sendEmailVerification();
-            },
-            child: const Text("Send Email verification "))
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Verify email'),
+      ),
+      body: Column(
+        children: [
+          const Text("Please verify your email"),
+          TextButton(
+              onPressed: () async {
+                final user = FirebaseAuth.instance.currentUser;
+                await user?.sendEmailVerification();
+              },
+              child: const Text("Send Email verification "))
+        ],
+      ),
     );
   }
 }
