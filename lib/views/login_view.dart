@@ -61,7 +61,7 @@ class _LoginViewState extends State<LoginView> {
                     .signInWithEmailAndPassword(
                         email: email, password: password);
                 Navigator.of(context)
-                    .pushNamedAndRemoveUntil(NotesRoute, (route) => false);
+                    .pushNamedAndRemoveUntil(notesRoute, (route) => false);
                 devtools.log(UserCredential.toString());
               } on FirebaseAuthException catch (e) {
                 switch (e.code) {
@@ -73,8 +73,6 @@ class _LoginViewState extends State<LoginView> {
                     break;
                   default:
                     await showErrorDialog(context, "Error: ${e.code}");
-                    devtools.log("Something bad happen");
-                    devtools.log(e.code);
                 }
               } catch (e) {
                 await showErrorDialog(context, e.toString());
@@ -85,7 +83,7 @@ class _LoginViewState extends State<LoginView> {
           TextButton(
             onPressed: () {
               Navigator.of(context)
-                  .pushNamedAndRemoveUntil(RegisterRoute, (route) => false);
+                  .pushNamedAndRemoveUntil(registerRoute, (route) => false);
             },
             child: const Text('Not register yet ? Register here!'),
           )
